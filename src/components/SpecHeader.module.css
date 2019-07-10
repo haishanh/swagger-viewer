@@ -1,0 +1,39 @@
+.a {
+  display: block;
+  margin-left: 20px;
+
+  color: #ddd;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: #eee;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.root {
+  position: relative;
+}
+
+.up {
+  height: 120px;
+  background-color: var(--color-focus-blue);
+  padding-top: 30px;
+}
+
+.down {
+  height: 20px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+}

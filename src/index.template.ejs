@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="application-name" content="Swagger Viewer" />
+    <meta name="description" content="Swagger Viewer" />
+    <meta name="theme-color" content="#202020" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <meta
+      property="og:image"
+      content="https://swagger.io/swagger/media/Images/Homepage/SW_OV_Band5.svg"
+    />
+    <meta property="og:site_name" content="Swagger Renderer" />
+    <meta property="og:type" content="object" />
+    <meta property="og:title" content="Swagger Renderer" />
+    <meta property="og:url" content="http://haishanh.github.io/swagger" />
+    <meta property="og:description" content="Swagger Renderer" />
+
+    <% for (key in htmlWebpackPlugin.files.css) { %>
+    <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet" />
+    <% } %>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <% for (key in htmlWebpackPlugin.files.chunks) { %>
+    <script
+      src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
+      type="text/javascript"
+    ></script>
+    <% } %>
+  </body>
+</html>

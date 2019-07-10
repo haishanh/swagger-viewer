@@ -1,0 +1,47 @@
+.container {
+  overflow: auto;
+  padding: 20px;
+}
+
+.ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1000px;
+}
+
+.li {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
+  .rm {
+    visibility: hidden;
+  }
+
+  &:hover .rm {
+    visibility: visible;
+  }
+
+  a {
+    display: block;
+    margin-left: 20px;
+
+    color: #333;
+    text-decoration: none;
+
+    &:hover,
+    &:active {
+      color: #387cec;
+    }
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .url {
+    margin-top: 5px;
+    font-size: 0.85em;
+  }
+}
