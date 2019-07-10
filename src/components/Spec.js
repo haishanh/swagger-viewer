@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useDispatch } from './Provider';
 
 import SpecHeader from './SpecHeader';
@@ -19,7 +19,7 @@ export default function Spec({ match }) {
 
       dispatch({ type: 'SpecLoaded', payload: { title, url } });
     },
-    [url]
+    [dispatch]
   );
 
   return (
