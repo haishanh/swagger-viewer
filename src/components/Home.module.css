@@ -13,12 +13,15 @@
 .li {
   display: flex;
   align-items: center;
-  margin-top: 20px;
+
+  margin-top: 30px;
+  &:first-child {
+    margin-top: 0;
+  }
 
   .rm {
     visibility: hidden;
   }
-
   &:hover .rm {
     visibility: visible;
   }
