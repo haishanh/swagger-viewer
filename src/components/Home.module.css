@@ -21,6 +21,7 @@
 
   .rm {
     visibility: hidden;
+    cursor: pointer;
   }
   &:hover .rm {
     visibility: visible;
