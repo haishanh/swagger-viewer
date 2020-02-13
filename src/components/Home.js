@@ -11,6 +11,13 @@ import s0 from './Home.module.css';
 
 const paddingBottom = 30;
 
+const jump = () => {
+  const callbackUrl = window.location.origin + '/api/github/callback';
+  const redirect = encodeURIComponent(callbackUrl);
+  const clientId = process.env.GH_APP_CLIENT_ID;
+  window.location = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirect}&scope=notifications`;
+};
+
 export default function Home() {
   const { specs } = useStore();
   const dispatch = useDispatch();
@@ -19,6 +26,7 @@ export default function Home() {
 
   return (
     <>
+      <button onClick={jump}>login</button>
       <EnterNewSepcUrl />
       <div
         className={s0.container}

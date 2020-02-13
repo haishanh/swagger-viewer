@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
-import { Router, Route } from 'react-router-dom';
-import { hot } from 'react-hot-loader/root';
+import { Router, Route, Routes } from 'react-router-dom';
 import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
 import Home from './Home';
@@ -25,9 +24,11 @@ const Root = () => (
     <Provider>
       <Router history={history}>
         <HistoryProvider>
-          <Suspense fallback={<Loading height="200px" />} maxDuration={10}>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/:id" component={Spec} />
+          <Suspense fallback={<Loading height="200px" />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/:id" element={<Spec />} />
+            </Routes>
           </Suspense>
         </HistoryProvider>
       </Router>
@@ -35,4 +36,4 @@ const Root = () => (
   </ErrorBoundary>
 );
 
-export default hot(Root);
+export default Root;

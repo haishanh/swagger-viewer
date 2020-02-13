@@ -15,8 +15,6 @@ const port = PORT ? Number(PORT) : 3000;
 config.entry.app.unshift('webpack-hot-middleware/client');
 config.plugins.push(
   new webpack.HotModuleReplacementPlugin(),
-  // prints more readable module names in the browser console on HMR updates
-  new webpack.NamedModulesPlugin(),
   new webpack.NoEmitOnErrorsPlugin()
 );
 
@@ -40,6 +38,13 @@ const wdm = devMiddleware(compiler, options);
 const whm = hotMiddleware(compiler);
 app.use(wdm);
 app.use(whm);
+
+app.get('/_dev', (_req, res) => {
+  const outputPath = wdm.getFilenameFromUrl(options.publicPath || '/');
+  const filesystem = wdm.fileSystem;
+  const content = filesystem.readdirSync(outputPath);
+  res.end(content.join('\n'));
+});
 
 app.use('*', (_req, res, next) => {
   const filename = path.join(compiler.outputPath, 'index.html');

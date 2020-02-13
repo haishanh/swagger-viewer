@@ -7,7 +7,7 @@ import Root from './components/Root';
 
 const rootEl = document.getElementById('app');
 
-const { unstable_createRoot: createRoot } = ReactDOM;
+const { createRoot } = ReactDOM;
 
 const root = createRoot(rootEl);
 root.render(<Root />);

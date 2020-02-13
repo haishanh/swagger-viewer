@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "env": {
+    "GH_APP_CLIENT_ID": "@now-gh-notifications-gh-oauth-app-client-id",
+    "GH_APP_CLIENT_SECRET": "@now-gh-notifications-gh-oauth-app-client-secret"
+  },
+  "build": {
+    "env": {
+      "GH_APP_CLIENT_ID": "@now-gh-notifications-gh-oauth-app-client-id"
+    }
+  }
+}
