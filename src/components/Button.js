@@ -1,20 +1,50 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import cx from 'classnames';
+
+import type { Node, Element, SyntheticEvent } from 'react';
 
 import s0 from './Button.module.css';
-const noop = () => {};
 
-const Button = React.memo(function Button({ label, onClick = noop }) {
+const { memo, forwardRef, useCallback } = React;
+
+type ButtonProps = {
+  children?: Node,
+  label?: string,
+  text?: string,
+  start?: Element | (() => Element),
+  onClick?: (SyntheticEvent<HTMLButtonElement>) => mixed,
+  kind?: 'primary' | 'minimal'
+};
+function Button(props: ButtonProps, ref) {
+  const { onClick, isLoading, kind = 'primary', ...restProps } = props;
+  const internalOnClick = useCallback(
+    e => {
+      if (isLoading) return;
+      onClick && onClick(e);
+    },
+    [isLoading, onClick]
+  );
+  const btnClassName = cx(s0.btn, {
+    [s0.minimal]: kind === 'minimal'
+  });
   return (
-    <button className={s0.btn} onClick={onClick}>
-      {label}
+    <button className={btnClassName} ref={ref} onClick={internalOnClick}>
+      <ButtonInternal {...restProps} />
     </button>
   );
-});
+}
 
-Button.propTypes = {
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func
-};
+function ButtonInternal({ children, label, text, start }) {
+  return (
+    <>
+      {start ? (
+        <span className={s0.btnStart}>
+          {typeof start === 'function' ? start() : start}
+        </span>
+      ) : null}
+      {children || label || text}
+    </>
+  );
+}
 
-export default Button;
+export default memo(forwardRef(Button));

@@ -1,5 +1,9 @@
 import React from 'react';
 import { loadState, saveState } from '../misc/storage';
+import {
+  getGitHubTokenFromLocalStorageSafely,
+  logoutGitHub
+} from '../misc/github';
 
 const { createContext, useContext, useReducer } = React;
 
@@ -20,6 +24,7 @@ const partialInitialState = loadState();
 //   url: 'tset'
 // };
 const initialState = partialInitialState;
+initialState.isLoggedInGitHub = !!getGitHubTokenFromLocalStorageSafely();
 
 function reducer(state, action) {
   const { type, payload } = action;
@@ -65,6 +70,13 @@ function reducer(state, action) {
       // side effect
       saveState(statePartialNext);
       return { ...state, ...statePartialNext };
+    }
+
+    case 'LogOutGitHub': {
+      // side effect
+      logoutGitHub();
+
+      return { ...state, isLoggedInGitHub: false };
     }
 
     default:

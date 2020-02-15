@@ -9,11 +9,6 @@
   &:active {
     color: #eee;
   }
-
-  svg {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 .root {

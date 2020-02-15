@@ -20,6 +20,7 @@
   }
 
   .rm {
+    display: inline-flex;
     visibility: hidden;
     cursor: pointer;
   }
@@ -47,5 +48,20 @@
   .url {
     margin-top: 5px;
     font-size: 0.85em;
+  }
+}
+
+.sepTinyFooter {
+  color: #999;
+}
+.btnTinyFooter {
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  text-decoration: underline;
+  font-size: smaller;
+  padding: 0;
+  &:focus {
+    outline: 1px solid var(--color-focus-blue);
   }
 }

@@ -46,6 +46,7 @@ app.get('/_dev', (_req, res) => {
   res.end(content.join('\n'));
 });
 
+app.get('/api/github/callback', require('./api/github/callback'));
 app.use('*', (_req, res, next) => {
   const filename = path.join(compiler.outputPath, 'index.html');
   compiler.outputFileSystem.readFile(filename, (err, result) => {

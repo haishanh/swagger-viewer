@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src",
-    "start": "NODE_ENV=development node server.js",
+    "start": "source .env.local; NODE_ENV=development node server.js",
     "build": "NODE_ENV=production webpack -p --progress",
     "pretty": "prettier --single-quote --write 'src/**/*.{js,scss}'"
   },
@@ -35,17 +35,18 @@
     "@hsjs/react-cache": "0.0.0-alpha.aa94237",
     "classnames": "^2.2.6",
     "core-js": "^3.1.4",
-    "got": "^10.5.5",
     "history": "^4.7.2",
     "invariant": "^2.2.4",
+    "node-fetch": "^2.6.0",
     "prop-types": "^15.5.10",
     "react": "0.0.0-experimental-241c4467e",
     "react-dom": "0.0.0-experimental-241c4467e",
-    "react-icons": "^3.7.0",
+    "react-feather": "^2.0.3",
     "react-router": "6.0.0-alpha.1",
     "react-router-dom": "6.0.0-alpha.1",
     "regenerator-runtime": "^0.13.2",
-    "swagger-ui-react": "^3.23.0"
+    "swagger-ui-react": "^3.23.0",
+    "yaml": "^1.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",

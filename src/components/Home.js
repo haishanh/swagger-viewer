@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import cx from 'classnames';
 import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import EnterNewSepcUrl from './EnterNewSepcUrl';
-import { FiX } from 'react-icons/fi';
+import { X as IconClose } from 'react-feather';
 import { useStore, useDispatch } from './Provider';
 
 // const { useCallback } = React;
@@ -10,13 +11,6 @@ import { useStore, useDispatch } from './Provider';
 import s0 from './Home.module.css';
 
 const paddingBottom = 30;
-
-const jump = () => {
-  const callbackUrl = window.location.origin + '/api/github/callback';
-  const redirect = encodeURIComponent(callbackUrl);
-  const clientId = process.env.GH_APP_CLIENT_ID;
-  window.location = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirect}&scope=notifications`;
-};
 
 export default function Home() {
   const { specs } = useStore();
@@ -26,7 +20,6 @@ export default function Home() {
 
   return (
     <>
-      <button onClick={jump}>login</button>
       <EnterNewSepcUrl />
       <div
         className={s0.container}
@@ -41,15 +34,15 @@ export default function Home() {
             const to = encodeURIComponent(url);
             return (
               <li key={url} className={s0.li}>
-                <div
+                <span
                   className={s0.rm}
                   style={{ color: '#aaa' }}
                   onClick={() =>
                     dispatch({ type: 'RemoveOneSpec', payload: { url } })
                   }
                 >
-                  <FiX />
-                </div>
+                  <IconClose size={16} />
+                </span>
                 <Link to={to}>
                   <h3>{specs[url].title}</h3>
                   <div className={s0.url}>{url}</div>
@@ -59,6 +52,42 @@ export default function Home() {
           })}
         </ul>
       </div>
+
+      <FixedTinyFooter />
     </>
+  );
+}
+
+function FixedTinyFooter() {
+  const { isLoggedInGitHub } = useStore();
+  const dispatch = useDispatch();
+  return (
+    <span
+      style={{
+        position: 'fixed',
+        left: 15,
+        bottom: 15
+      }}
+    >
+      <a
+        className="secondary-link"
+        href="https://github.com/haishanh/swagger-viewer"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <small>Code</small>
+      </a>
+      {isLoggedInGitHub ? (
+        <>
+          <span className={s0.sepTinyFooter}> / </span>
+          <button
+            className={cx(s0.btnTinyFooter, 'secondary-link')}
+            onClick={() => dispatch({ type: 'LogOutGitHub' })}
+          >
+            Logout
+          </button>
+        </>
+      ) : null}
+    </span>
   );
 }

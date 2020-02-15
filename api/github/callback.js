@@ -1,23 +1,30 @@
 'use strict';
 
-const got = require('got');
+const fetch = require('node-fetch');
 
 const { GH_APP_CLIENT_ID, GH_APP_CLIENT_SECRET } = process.env;
 
-async function request(url, { method = 'GET', headers, body } = {}) {
+async function request(url, { method, headers = {}, body } = {}) {
   const init = {
     headers: {
-      'content-type': 'application/json',
-      accept: 'application/json',
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
       ...headers
     },
-    method,
-    body,
-    json: true
+    method
   };
-  const x = await got(url, init);
-  // console.log(x.statusCode);
-  return x.body;
+  if (body) {
+    init.body = JSON.stringify(body);
+  }
+  const res = await fetch(url, init);
+  const resHeaders = res.headers;
+  if (res.ok) {
+    const contentType = resHeaders.get('content-type');
+    if (contentType.indexOf('json') > -1) {
+      return await res.json();
+    }
+  }
+  throw res;
 }
 
 module.exports = async (req, res) => {
@@ -25,20 +32,15 @@ module.exports = async (req, res) => {
   const qs = `client_id=${GH_APP_CLIENT_ID}&client_secret=${GH_APP_CLIENT_SECRET}&code=${code}`;
   const url = `https://github.com/login/oauth/access_token?${qs}`;
   const ret = await request(url, { method: 'POST' });
-
+  const toSave = { t: ret.access_token, c: new Date() };
+  // assert ret.scope === 'repo'
   res.setHeader('Content-Type', 'text/html');
-  // TODO
-  // storage key name
-  // expire time?
   const script = `
-<script>
-
-localStorage.setItem('gh', '${ret.access_token}');
-
-window.location = '/';
-</script>
-`;
-
+  <script>
+    localStorage.setItem('sv:gh', '${JSON.stringify(toSave)}');
+    window.location = '/';
+  </script>
+  `;
   res.write(script);
   res.end();
 };

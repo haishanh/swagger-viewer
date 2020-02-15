@@ -1,12 +1,15 @@
 .btn {
   -webkit-appearance: none;
   outline: none;
+  user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-btn-fg);
   background: var(--color-btn-bg);
   border: 1px solid #555;
   border-radius: 100px;
-  padding: 6px 12px;
-  user-select: none;
   &:focus {
     border-color: var(--color-focus-blue);
   }
@@ -14,9 +17,31 @@
     background: #387cec;
     border: 1px solid #387cec;
     color: #fff;
-    /* background: darken(#555, 3%); */
   }
   &:active {
     transform: scale(0.97);
   }
+
+  font-size: 1em;
+  padding: 6px 12px;
+
+  &.minimal {
+    border-color: transparent;
+    background: none;
+    &:focus {
+      border-color: var(--color-focus-blue);
+    }
+    &:hover {
+      color: #fff;
+      background: #387cec;
+      border: 1px solid #387cec;
+    }
+  }
+}
+
+.btnStart {
+  margin-right: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
