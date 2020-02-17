@@ -12,6 +12,12 @@
     <% for (key in htmlWebpackPlugin.files.css) { %>
     <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet" />
     <% } %>
+    <script>
+      var pat = /^https:\/\/haishanh\.github\.io\/swagger-viewer/;
+      if (pat.test(window.location.href)) {
+        window.location = window.location.href.replace('https://haishanh.github.io/swagger-viewer', 'https://swagger-viewer.now.sh');
+      }
+    </script>
   </head>
 
   <body>
