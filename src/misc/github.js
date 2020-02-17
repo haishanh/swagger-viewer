@@ -50,7 +50,9 @@ export function loginWithGitHub() {
   const callbackUrl = window.location.origin + '/api/github/callback';
   const redirect = encodeURIComponent(callbackUrl);
   const clientId = process.env.GH_APP_CLIENT_ID;
-  window.location = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirect}&scope=repo`;
+  const state = encodeURIComponent(window.location.hash);
+  const to = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirect}&scope=repo&state=${state}`;
+  window.location = to;
 }
 
 export function logoutGitHub() {
