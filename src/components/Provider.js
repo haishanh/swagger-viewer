@@ -19,8 +19,7 @@ const { createContext, useContext, useReducer } = React;
 const partialInitialState = loadState();
 // partialInitialState.allSpecs.push('test');
 // partialInitialState.specs.test = {
-//   title:
-//     'Yo looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog title abc efg',
+//   title: 'this is a title',
 //   url: 'tset'
 // };
 const initialState = partialInitialState;

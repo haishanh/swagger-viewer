@@ -55,9 +55,10 @@
   color: #999;
 }
 .btnTinyFooter {
-  -webkit-appearance: none;
+  appearance: none;
   outline: none;
   border: none;
+  background: none;
   text-decoration: underline;
   font-size: smaller;
   padding: 0;

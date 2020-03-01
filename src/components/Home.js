@@ -5,8 +5,7 @@ import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import EnterNewSepcUrl from './EnterNewSepcUrl';
 import { X as IconClose } from 'react-feather';
 import { useStore, useDispatch } from './Provider';
-
-// const { useCallback } = React;
+import Empty from './Empty';
 
 import s0 from './Home.module.css';
 
@@ -29,28 +28,32 @@ export default function Home() {
           paddingBottom
         }}
       >
-        <ul className={s0.ul}>
-          {urls.map(url => {
-            const to = encodeURIComponent(url);
-            return (
-              <li key={url} className={s0.li}>
-                <span
-                  className={s0.rm}
-                  style={{ color: '#aaa' }}
-                  onClick={() =>
-                    dispatch({ type: 'RemoveOneSpec', payload: { url } })
-                  }
-                >
-                  <IconClose size={16} />
-                </span>
-                <Link to={to}>
-                  <h3>{specs[url].title}</h3>
-                  <div className={s0.url}>{url}</div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {urls.length > 0 ? (
+          <ul className={s0.ul}>
+            {urls.map(url => {
+              const to = encodeURIComponent(url);
+              return (
+                <li key={url} className={s0.li}>
+                  <span
+                    className={s0.rm}
+                    style={{ color: '#aaa' }}
+                    onClick={() =>
+                      dispatch({ type: 'RemoveOneSpec', payload: { url } })
+                    }
+                  >
+                    <IconClose size={16} />
+                  </span>
+                  <Link to={to}>
+                    <h3>{specs[url].title}</h3>
+                    <div className={s0.url}>{url}</div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <Empty />
+        )}
       </div>
 
       <FixedTinyFooter />
