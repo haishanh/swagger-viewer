@@ -21,7 +21,7 @@ function Empty() {
       <div style={{ textAlign: 'center' }}>
         <h3>No swagger specs yet</h3>
         <p>
-          Try add the sepc below which is from the great{' '}
+          Try add the spec below which is from the great{' '}
           <a
             href="https://httpbin.org/"
             target="_blank"
