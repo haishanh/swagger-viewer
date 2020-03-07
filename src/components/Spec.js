@@ -5,6 +5,7 @@ import { useDispatch } from './Provider';
 import { getContents } from '../misc/github';
 import yaml from 'yaml';
 
+import { RegularExpression } from '../misc/constants';
 import FileNotFound from './FileNotFound';
 import Loading from './Loading';
 import SpecHeader from './SpecHeader';
@@ -13,7 +14,6 @@ import 'swagger-ui-react/swagger-ui.css';
 
 const { useCallback, useState, useEffect } = React;
 
-const regexGithubFileUrl = /^https:\/\/github\.com\/([^\s/]+)\/([^\s/]+)\/blob\/([^\s/]+)\/([^\s]+)$/;
 // const spec = `openapi: 3.0.0\ninfo:\n  title: hello\n  version: 1.0.0\n`;
 // const spec = {
 //   openapi: '3.0.0',
@@ -30,7 +30,7 @@ export default function Spec() {
   const params = useParams();
   const url = decodeURIComponent(params.id);
   const [swaggerProps, setSwaggerProps] = useState(() => {
-    let cap = regexGithubFileUrl.exec(url);
+    let cap = RegularExpression.githubFileUrl.exec(url);
     if (!cap) return { url };
 
     const [, owner, repo, ref, path] = cap;

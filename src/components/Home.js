@@ -6,10 +6,40 @@ import EnterNewSepcUrl from './EnterNewSepcUrl';
 import { X as IconClose } from 'react-feather';
 import { useStore, useDispatch } from './Provider';
 import Empty from './Empty';
+import Tag, { GreenTag, YellowTag, PinkTag } from './Tag';
+
+import { RegularExpression } from '../misc/constants';
 
 import s0 from './Home.module.css';
 
 const paddingBottom = 30;
+
+function getTagFromSpecUrl(url) {
+  let cap;
+  let ref;
+  if ((cap = RegularExpression.githubFileUrl.exec(url))) {
+    ref = cap[3];
+  } else if ((cap = RegularExpression.githubRawFileUrl.exec(url))) {
+    ref = cap[1];
+  } else {
+    return;
+  }
+
+  let tagType = PinkTag;
+  let label = ref;
+  if (ref === 'master') {
+    tagType = GreenTag;
+  } else if (ref === 'dev' || ref === 'develop' || ref === 'development') {
+    tagType = YellowTag;
+  } else if (/^[a-z0-9]{12,}$/.test(ref)) {
+    label = ref.slice(0, 6);
+  }
+
+  return {
+    type: tagType,
+    label
+  };
+}
 
 export default function Home() {
   const { specs } = useStore();
@@ -32,6 +62,7 @@ export default function Home() {
           <ul className={s0.ul}>
             {urls.map(url => {
               const to = encodeURIComponent(url);
+              const tag = getTagFromSpecUrl(url);
               return (
                 <li key={url} className={s0.li}>
                   <span
@@ -44,7 +75,10 @@ export default function Home() {
                     <IconClose size={16} />
                   </span>
                   <Link to={to}>
-                    <h3>{specs[url].title}</h3>
+                    <div className={s0.row1}>
+                      <h3>{specs[url].title}</h3>
+                      {tag ? <Tag type={tag.type} label={tag.label} /> : null}
+                    </div>
                     <div className={s0.url}>{url}</div>
                   </Link>
                 </li>
