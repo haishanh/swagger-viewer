@@ -37,6 +37,7 @@
     "core-js": "^3.1.4",
     "history": "^4.7.2",
     "invariant": "^2.2.4",
+    "js-yaml": "^3.13.1",
     "node-fetch": "^2.6.0",
     "prop-types": "^15.5.10",
     "react": "0.0.0-experimental-241c4467e",
@@ -46,8 +47,7 @@
     "react-router": "6.0.0-alpha.1",
     "react-router-dom": "6.0.0-alpha.1",
     "regenerator-runtime": "^0.13.2",
-    "swagger-ui-react": "^3.23.0",
-    "yaml": "^1.7.2"
+    "swagger-ui-react": "^3.23.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",

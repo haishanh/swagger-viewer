@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from './Provider';
 import { getContents } from '../misc/github';
-import yaml from 'yaml';
+import yaml from 'js-yaml';
 
 import { RegularExpression } from '../misc/constants';
 import FileNotFound from './FileNotFound';
@@ -43,7 +43,8 @@ export default function Spec() {
     getContents(githubGetContentsOptions).then(
       json => {
         const cnt = atob(json.content);
-        setSwaggerProps({ spec: yaml.parse(cnt) });
+        const spec = yaml.safeLoad(cnt);
+        setSwaggerProps({ spec: spec });
       },
       res => {
         if (res.status === 404) {
