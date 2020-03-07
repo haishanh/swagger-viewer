@@ -19,6 +19,14 @@ config.plugins.push(
 );
 
 const compiler = webpack(config);
+
+// beep if there is an error
+compiler.hooks.done.tap('ErrorBeep', stats => {
+  if (stats.hasErrors()) {
+    process.stderr.write('\x07');
+  }
+});
+
 // webpack-dev-server config
 const publicPath = config.output.publicPath;
 const stats = {
