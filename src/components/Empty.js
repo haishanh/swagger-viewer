@@ -1,8 +1,8 @@
 import React from 'react';
 import { Ghost } from 'react-kawaii';
-import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 
+import Button from './Button';
 import s from './Empty.module.css';
 
 const url = 'https://httpbin.org/spec.json';

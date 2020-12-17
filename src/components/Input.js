@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 import s0 from './Input.module.css';
 
@@ -12,5 +12,5 @@ Input.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   name: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
 };

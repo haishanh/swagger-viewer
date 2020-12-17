@@ -1,16 +1,17 @@
 // vim : set ft=javascript :
+import 'swagger-ui-react/swagger-ui.css';
+
+import yaml from 'js-yaml';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from './Provider';
-import { getContents } from '../misc/github';
-import yaml from 'js-yaml';
+import SwaggerUI from 'swagger-ui-react';
 
 import { RegularExpression } from '../misc/constants';
+import { getContents } from '../misc/github';
 import FileNotFound from './FileNotFound';
 import Loading from './Loading';
+import { useDispatch } from './Provider';
 import SpecHeader from './SpecHeader';
-import SwaggerUI from 'swagger-ui-react';
-import 'swagger-ui-react/swagger-ui.css';
 
 const { useCallback, useState, useEffect } = React;
 
@@ -41,12 +42,12 @@ export default function Spec() {
   useEffect(() => {
     if (swaggerProps.url) return;
     getContents(githubGetContentsOptions).then(
-      json => {
+      (json) => {
         const cnt = atob(json.content);
         const spec = yaml.safeLoad(cnt);
         setSwaggerProps({ spec: spec });
       },
-      res => {
+      (res) => {
         if (res.status === 404) {
           setErr({ notFound: githubGetContentsOptions });
         }
@@ -54,7 +55,7 @@ export default function Spec() {
     );
   }, [swaggerProps.url]);
   const onComplete = useCallback(
-    system => {
+    (system) => {
       const state = system.getState();
       // state is an immutablejs data
       // const version = state.getIn(['spec', 'json', 'info', 'version']);
@@ -76,7 +77,7 @@ export default function Spec() {
         <div
           style={{
             maxWidth: 500,
-            margin: '0 auto'
+            margin: '0 auto',
           }}
         >
           <FileNotFound owner={err.notFound.owner} repo={err.notFound.repo} />

@@ -1,10 +1,12 @@
+import './Root.css';
+
 import React, { Suspense } from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
-import Loading from './Loading';
+
 import ErrorBoundary from './ErrorBoundary';
 import Home from './Home';
+import Loading from './Loading';
 import Provider from './Provider';
-import './Root.css';
 // import s0 from './Root.module.css';
 
 const Spec = React.lazy(() =>

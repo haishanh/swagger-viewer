@@ -5,27 +5,25 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HTMLPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+// const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ReactRefreshWebpackPlugin = require('@hsjs/react-refresh-webpack-plugin');
-// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 const pkg = require('./package.json');
 
 process.env.BABEL_ENV = process.env.NODE_ENV;
 const isDev = process.env.NODE_ENV !== 'production';
 
+const publicPath = '';
+
 const html = new HTMLPlugin({
   title: 'Swagger Viewer',
   template: 'src/index.template.ejs',
   scriptLoading: 'defer',
   filename: 'index.html',
-});
-
-const definePlugin = new webpack.DefinePlugin({
-  __DEV__: JSON.stringify(isDev),
-  __VERSION__: JSON.stringify(pkg.version),
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  'process.env.GH_APP_CLIENT_ID': JSON.stringify(process.env.GH_APP_CLIENT_ID),
 });
 
 const postcssPlugins = () =>
@@ -47,8 +45,9 @@ const postcssPlugins = () =>
     require('postcss-nested')(),
     require('autoprefixer')(),
     require('postcss-extend-rule')(),
-    isDev ? false : require('cssnano')(),
   ].filter(Boolean);
+
+const postcssOptions = { plugins: postcssPlugins() };
 
 const cssExtractPlugin = new MiniCssExtractPlugin({
   filename: isDev ? '[name].css' : '[name].[contenthash].css',
@@ -62,36 +61,92 @@ const bundleAnalyzerPlugin = new BundleAnalyzerPlugin({
 
 const plugins = [
   html,
-  definePlugin,
-  new CopyPlugin({ patterns: [{ from: 'assets/*', flatten: true }] }),
+  new webpack.DefinePlugin({
+    __DEV__: JSON.stringify(isDev),
+    __VERSION__: JSON.stringify(pkg.version),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env.PUBLIC_URL': JSON.stringify(publicPath),
+  }),
+  new ForkTsCheckerWebpackPlugin(),
+  // new ForkTsCheckerNotifierWebpackPlugin({
+  //   title: 'TypeScript',
+  //   excludeWarnings: false,
+  // }),
+  new CopyPlugin({ patterns: [{ from: 'assets/*' }] }),
   new CleanWebpackPlugin(),
   // chart.js requires moment
   // and we don't need locale stuff in moment
-  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  new webpack.IgnorePlugin({ resourceRegExp: /(^\.\/locale$)|(moment$)/ }),
+  isDev
+    ? false
+    : new InjectManifest({
+        swSrc: './src/sw.ts',
+        dontCacheBustURLsMatching: /\.[0-9a-f]{20}\./,
+        exclude: [
+          /\.map$/,
+          /asset-manifest\.json$/,
+          /LICENSE/,
+          'CNAME',
+          '_headers',
+        ],
+      }),
   // https://github.com/pmmmwh/react-refresh-webpack-plugin
-  isDev ? new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }) : false,
+  isDev
+    ? new ReactRefreshWebpackPlugin({
+        overlay: { sockIntegration: 'whm' },
+      })
+    : false,
   // isDev ? false : new webpack.HashedModuleIdsPlugin(),
   isDev ? false : cssExtractPlugin,
   isDev ? false : bundleAnalyzerPlugin,
 ].filter(Boolean);
 
 module.exports = {
-  // https://webpack.js.org/configuration/devtool/
-  devtool: isDev ? 'eval-source-map' : false,
-  entry: {
-    // app: ['react-hot-loader/patch', './src/app.js']
-    app: ['./src/app.js'],
+  stats: {
+    children: false,
   },
+  // https://webpack.js.org/configuration/devtool/
+  devtool: isDev ? 'eval-source-map' : 'source-map',
+  entry: {
+    app: {
+      import: ['./src/app.tsx'],
+      dependOn: ['react', 'swagger', 'highlight', 'refractor'],
+    },
+    swagger: { import: ['swagger-ui-react'], dependOn: 'react' },
+    highlight: { import: ['highlight.js'], dependOn: 'react' },
+    refractor: { import: ['refractor'], dependOn: 'react' },
+
+    react: { import: ['react', 'react-dom'], dependOn: 'corejs' },
+    corejs: { import: 'core-js' },
+  },
+  context: __dirname,
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
-    publicPath: '',
+    publicPath,
   },
   mode: isDev ? 'development' : 'production',
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      src: path.resolve(__dirname, 'src'),
+      // polyfill buffer
+      // yarn add buffer
+      // swagger-ui requires this
+      // but webpack 5 removed "node" module polyfill for browsers
+      buffer: 'buffer',
+    },
+  },
   module: {
     rules: [
+      // to work around "Module not found" issue for babel runtime imports
+      // https://github.com/webpack/webpack/issues/11467
       {
-        test: /\.js$/,
+        test: /\.m?js/,
+        resolve: { fullySpecified: false },
+      },
+      {
+        test: /\.[tj]sx?$/,
         exclude: /node_modules/,
         use: { loader: 'babel-loader', options: { cacheDirectory: true } },
       },
@@ -105,8 +160,8 @@ module.exports = {
         use: [
           isDev ? { loader: 'style-loader' } : MiniCssExtractPlugin.loader,
           { loader: 'css-loader' },
-          { loader: 'postcss-loader', options: { plugins: postcssPlugins } },
-        ].filter(Boolean),
+          { loader: 'postcss-loader', options: { postcssOptions } },
+        ],
       },
       {
         test: /\.module\.css$/,
@@ -122,42 +177,21 @@ module.exports = {
               },
             },
           },
-          {
-            loader: 'postcss-loader',
-            options: { plugins: postcssPlugins },
-          },
-        ].filter(Boolean),
+          { loader: 'postcss-loader', options: { postcssOptions } },
+        ],
       },
     ],
   },
   optimization: {
-    moduleIds: isDev ? 'named' : 'hashed',
-    runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        'core-js': {
-          test(module, _chunks) {
-            return (
-              module.resource &&
-              module.resource.indexOf('node_modules/core-js/') >= 0
-            );
-          },
-        },
-        react: {
-          test(module, _chunks) {
-            return (
-              module.resource &&
-              (module.resource.indexOf('node_modules/@hot-loader/react-dom/') >=
-                0 ||
-                module.resource.indexOf('node_modules/react-dom/') >= 0 ||
-                module.resource.indexOf('node_modules/react/') >= 0)
-            );
-          },
-        },
-      },
-    },
-    minimizer: [new TerserPlugin()],
+    splitChunks: { chunks: 'all' },
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
   },
   plugins,
+  bail: true,
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
 };

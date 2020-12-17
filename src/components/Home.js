@@ -1,16 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
-import EnterNewSepcUrl from './EnterNewSepcUrl';
+import React from 'react';
 import { X as IconClose } from 'react-feather';
-import { useStore, useDispatch } from './Provider';
-import Empty from './Empty';
-import Tag, { GreenTag, YellowTag, PinkTag } from './Tag';
+import { Link } from 'react-router-dom';
 
+import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import { RegularExpression } from '../misc/constants';
-
+import Empty from './Empty';
+import EnterNewSepcUrl from './EnterNewSepcUrl';
 import s0 from './Home.module.css';
+import { useDispatch, useStore } from './Provider';
+import Tag, { GreenTag, PinkTag, YellowTag } from './Tag';
 
 const paddingBottom = 30;
 
@@ -37,7 +36,7 @@ function getTagFromSpecUrl(url) {
 
   return {
     type: tagType,
-    label
+    label,
   };
 }
 
@@ -55,25 +54,24 @@ export default function Home() {
         ref={refContainer}
         style={{
           height: containerHeight - paddingBottom,
-          paddingBottom
+          paddingBottom,
         }}
       >
         {urls.length > 0 ? (
           <ul className={s0.ul}>
-            {urls.map(url => {
+            {urls.map((url) => {
               const to = encodeURIComponent(url);
               const tag = getTagFromSpecUrl(url);
               return (
                 <li key={url} className={s0.li}>
-                  <span
+                  <button
                     className={s0.rm}
-                    style={{ color: '#aaa' }}
                     onClick={() =>
                       dispatch({ type: 'RemoveOneSpec', payload: { url } })
                     }
                   >
                     <IconClose size={16} />
-                  </span>
+                  </button>
                   <Link to={to}>
                     <div className={s0.row1}>
                       <h3>{specs[url].title}</h3>
@@ -103,7 +101,7 @@ function FixedTinyFooter() {
       style={{
         position: 'fixed',
         left: 15,
-        bottom: 15
+        bottom: 15,
       }}
     >
       <a

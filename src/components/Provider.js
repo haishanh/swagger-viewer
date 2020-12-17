@@ -1,9 +1,10 @@
 import React from 'react';
-import { loadState, saveState } from '../misc/storage';
+
 import {
   getGitHubTokenFromLocalStorageSafely,
-  logoutGitHub
+  logoutGitHub,
 } from '../misc/github';
+import { loadState, saveState } from '../misc/storage';
 
 const { createContext, useContext, useReducer } = React;
 
@@ -37,12 +38,12 @@ function reducer(state, action) {
       const allSpecsNext = [url, ...allSpecs];
       const specsNext = {
         ...specs,
-        [url]: { title, url }
+        [url]: { title, url },
       };
 
       const statePartialNext = {
         specs: specsNext,
-        allSpecs: allSpecsNext
+        allSpecs: allSpecsNext,
       };
       // side effect
       saveState(statePartialNext);
@@ -56,7 +57,7 @@ function reducer(state, action) {
       const index = allSpecs.indexOf(url);
       const allSpecsNext = [
         ...allSpecs.slice(0, index),
-        ...allSpecs.slice(index + 1)
+        ...allSpecs.slice(index + 1),
       ];
 
       const specsNext = { ...specs };
@@ -64,7 +65,7 @@ function reducer(state, action) {
 
       const statePartialNext = {
         specs: specsNext,
-        allSpecs: allSpecsNext
+        allSpecs: allSpecsNext,
       };
       // side effect
       saveState(statePartialNext);

@@ -1,31 +1,21 @@
-import React from 'react';
 import cx from 'classnames';
-
-import type { Node, Element, SyntheticEvent } from 'react';
+import React from 'react';
 
 import s0 from './Button.module.css';
 
 const { memo, forwardRef, useCallback } = React;
 
-type ButtonProps = {
-  children?: Node,
-  label?: string,
-  text?: string,
-  start?: Element | (() => Element),
-  onClick?: (SyntheticEvent<HTMLButtonElement>) => mixed,
-  kind?: 'primary' | 'minimal'
-};
-function Button(props: ButtonProps, ref) {
+function Button(props, ref) {
   const { onClick, isLoading, kind = 'primary', ...restProps } = props;
   const internalOnClick = useCallback(
-    e => {
+    (e) => {
       if (isLoading) return;
       onClick && onClick(e);
     },
     [isLoading, onClick]
   );
   const btnClassName = cx(s0.btn, {
-    [s0.minimal]: kind === 'minimal'
+    [s0.minimal]: kind === 'minimal',
   });
   return (
     <button className={btnClassName} ref={ref} onClick={internalOnClick}>
