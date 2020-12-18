@@ -48,7 +48,12 @@
     "react-router": "6.0.0-alpha.1",
     "react-router-dom": "6.0.0-alpha.1",
     "regenerator-runtime": "^0.13.7",
-    "swagger-ui-react": "^3.38.0"
+    "swagger-ui-react": "^3.38.0",
+    "workbox-core": "^6.0.2",
+    "workbox-expiration": "^6.0.2",
+    "workbox-precaching": "^6.0.2",
+    "workbox-routing": "^6.0.2",
+    "workbox-strategies": "^6.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
