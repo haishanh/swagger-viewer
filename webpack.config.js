@@ -115,7 +115,6 @@ module.exports = {
     swagger: { import: ['swagger-ui-react'], dependOn: 'react' },
     highlight: { import: ['highlight.js'], dependOn: 'react' },
     refractor: { import: ['refractor'], dependOn: 'react' },
-
     react: { import: ['react', 'react-dom'], dependOn: 'corejs' },
     corejs: { import: 'core-js' },
   },
