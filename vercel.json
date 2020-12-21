@@ -1,14 +1,5 @@
 {
   "version": 2,
-  "env": {
-    "GH_APP_CLIENT_ID": "@swagger-viewer-gh-oauth-app-client-id",
-    "GH_APP_CLIENT_SECRET": "@swagger-viewer-gh-oauth-app-client-secret"
-  },
-  "build": {
-    "env": {
-      "GH_APP_CLIENT_ID": "@swagger-viewer-gh-oauth-app-client-id"
-    }
-  },
   "headers": [
     {
       "source": "/(.*).(js|css|png)",

@@ -1,9 +1,12 @@
 *.*~
 .DS_Store
 .env.local
+.env
 node_modules/
 public/
 experimental/
 deploy_ghpages.sh
 tags
 *.log
+
+.vercel
