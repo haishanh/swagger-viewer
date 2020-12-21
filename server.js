@@ -25,11 +25,10 @@ const whm = hotMiddleware(compiler);
 app.use(wdm);
 app.use(whm);
 
-app.get('/_dev', (_req, res) => {
-  const outputPath = wdm.getFilenameFromUrl(publicPath || '/');
-  const filesystem = wdm.fileSystem;
-  const content = filesystem.readdirSync(outputPath);
-  res.end(content.join('\n'));
+app.use('/_dev', (_req, res) => {
+  const fs = compiler.outputFileSystem;
+  const content = fs.readdirSync(compiler.outputPath);
+  res.json(content);
 });
 
 app.use('*', (_req, res, next) => {
