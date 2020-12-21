@@ -6,15 +6,12 @@ import { Link } from 'react-router-dom';
 import { IconButton } from 'src/components/base/IconButton';
 import { CopyButton } from 'src/components/SpecList/CopyButton';
 
-import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import { RegularExpression } from '../misc/constants';
 import Empty from './Empty';
 import EnterNewSepcUrl from './EnterNewSepcUrl';
 import s from './Home.module.css';
 import { useDispatch, useStore } from './Provider';
 import Tag, { GreenTag, PinkTag, YellowTag } from './Tag';
-
-const paddingBottom = 30;
 
 function getTagFromSpecUrl(url) {
   let cap;
@@ -79,19 +76,13 @@ export default function Home() {
   const { specs } = useStore();
   const dispatch = useDispatch();
   const urls = Object.keys(specs);
-  const [refContainer, containerHeight] = useRemainingViewPortHeight();
 
   return (
-    <>
-      <EnterNewSepcUrl />
-      <div
-        className={s.container}
-        ref={refContainer}
-        style={{
-          height: containerHeight - paddingBottom,
-          paddingBottom,
-        }}
-      >
+    <div className={s.home}>
+      <div className={s.top}>
+        <EnterNewSepcUrl />
+      </div>
+      <div className={s.container}>
         {urls.length > 0 ? (
           <ul className={s.ul}>
             {urls.map((url) => (
@@ -109,7 +100,7 @@ export default function Home() {
       </div>
 
       <FixedTinyFooter />
-    </>
+    </div>
   );
 }
 
@@ -117,13 +108,7 @@ function FixedTinyFooter() {
   const { isLoggedInGitHub } = useStore();
   const dispatch = useDispatch();
   return (
-    <span
-      style={{
-        position: 'fixed',
-        left: 15,
-        bottom: 15,
-      }}
-    >
+    <span style={{ position: 'fixed', left: 15, bottom: 15 }}>
       <a
         className="secondary-link"
         href="https://github.com/haishanh/swagger-viewer"
