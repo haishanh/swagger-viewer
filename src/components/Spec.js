@@ -4,14 +4,14 @@ import 'swagger-ui-react/swagger-ui.css';
 import yaml from 'js-yaml';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import FileNotFound from 'src/components/FileNotFound';
+import Loading from 'src/components/Loading';
+import { useDispatch } from 'src/components/Provider';
+import SpecHeader from 'src/components/SpecHeader';
+import * as b64 from 'src/misc/b64';
+import { RegularExpression } from 'src/misc/constants';
+import { getContents } from 'src/misc/github';
 import SwaggerUI from 'swagger-ui-react';
-
-import { RegularExpression } from '../misc/constants';
-import { getContents } from '../misc/github';
-import FileNotFound from './FileNotFound';
-import Loading from './Loading';
-import { useDispatch } from './Provider';
-import SpecHeader from './SpecHeader';
 
 const { useCallback, useState, useEffect } = React;
 
@@ -43,7 +43,7 @@ export default function Spec() {
     if (swaggerProps.url) return;
     getContents(githubGetContentsOptions).then(
       (json) => {
-        const cnt = atob(json.content);
+        const cnt = b64.decode(json.content);
         const spec = yaml.safeLoad(cnt);
         setSwaggerProps({ spec: spec });
       },

@@ -66,6 +66,9 @@ const plugins = [
     __VERSION__: JSON.stringify(pkg.version),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     'process.env.PUBLIC_URL': JSON.stringify(publicPath),
+    'process.env.GH_APP_CLIENT_ID': JSON.stringify(
+      process.env.GH_APP_CLIENT_ID
+    ),
   }),
   new ForkTsCheckerWebpackPlugin(),
   // new ForkTsCheckerNotifierWebpackPlugin({
