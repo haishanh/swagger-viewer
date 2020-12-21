@@ -72,7 +72,7 @@ const plugins = [
   }),
   new ForkTsCheckerWebpackPlugin(),
   // new ForkTsCheckerNotifierWebpackPlugin({
-  //   title: 'TypeScript',
+  //   title: 'swagger-viewer typescript',
   //   excludeWarnings: false,
   // }),
   new CopyPlugin({ patterns: [{ from: 'assets/*' }] }),

@@ -1,13 +1,16 @@
+import VisuallyHidden from '@reach/visually-hidden';
 import cx from 'classnames';
 import React from 'react';
 import { X as IconClose } from 'react-feather';
 import { Link } from 'react-router-dom';
+import { IconButton } from 'src/components/base/IconButton';
+import { CopyButton } from 'src/components/SpecList/CopyButton';
 
 import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import { RegularExpression } from '../misc/constants';
 import Empty from './Empty';
 import EnterNewSepcUrl from './EnterNewSepcUrl';
-import s0 from './Home.module.css';
+import s from './Home.module.css';
 import { useDispatch, useStore } from './Provider';
 import Tag, { GreenTag, PinkTag, YellowTag } from './Tag';
 
@@ -40,6 +43,38 @@ function getTagFromSpecUrl(url) {
   };
 }
 
+function SpecListItem({ specs, url, dispatch }) {
+  const to = encodeURIComponent(url);
+  const tag = getTagFromSpecUrl(url);
+
+  return (
+    <li className={s.li}>
+      <span class={s.rm}>
+        <IconButton
+          onClick={() => dispatch({ type: 'RemoveOneSpec', payload: { url } })}
+        >
+          <VisuallyHidden>Remove this entry</VisuallyHidden>
+          <IconClose size={16} />
+        </IconButton>
+      </span>
+      <div className={s.liRight}>
+        <Link to={to}>
+          <div className={s.row1}>
+            <h2>{specs[url].title}</h2>
+            {tag ? <Tag type={tag.type} label={tag.label} /> : null}
+          </div>
+        </Link>
+        <pre className={s.pre}>
+          <span>{url}</span>
+          <span className={s.copyBtn}>
+            <CopyButton provideContent={() => url} />
+          </span>
+        </pre>
+      </div>
+    </li>
+  );
+}
+
 export default function Home() {
   const { specs } = useStore();
   const dispatch = useDispatch();
@@ -50,7 +85,7 @@ export default function Home() {
     <>
       <EnterNewSepcUrl />
       <div
-        className={s0.container}
+        className={s.container}
         ref={refContainer}
         style={{
           height: containerHeight - paddingBottom,
@@ -58,30 +93,15 @@ export default function Home() {
         }}
       >
         {urls.length > 0 ? (
-          <ul className={s0.ul}>
-            {urls.map((url) => {
-              const to = encodeURIComponent(url);
-              const tag = getTagFromSpecUrl(url);
-              return (
-                <li key={url} className={s0.li}>
-                  <button
-                    className={s0.rm}
-                    onClick={() =>
-                      dispatch({ type: 'RemoveOneSpec', payload: { url } })
-                    }
-                  >
-                    <IconClose size={16} />
-                  </button>
-                  <Link to={to}>
-                    <div className={s0.row1}>
-                      <h3>{specs[url].title}</h3>
-                      {tag ? <Tag type={tag.type} label={tag.label} /> : null}
-                    </div>
-                    <div className={s0.url}>{url}</div>
-                  </Link>
-                </li>
-              );
-            })}
+          <ul className={s.ul}>
+            {urls.map((url) => (
+              <SpecListItem
+                url={url}
+                dispatch={dispatch}
+                specs={specs}
+                key={url}
+              />
+            ))}
           </ul>
         ) : (
           <Empty />
@@ -114,9 +134,9 @@ function FixedTinyFooter() {
       </a>
       {isLoggedInGitHub ? (
         <>
-          <span className={s0.sepTinyFooter}> / </span>
+          <span className={s.sepTinyFooter}> / </span>
           <button
-            className={cx(s0.btnTinyFooter, 'secondary-link')}
+            className={cx(s.btnTinyFooter, 'secondary-link')}
             onClick={() => dispatch({ type: 'LogOutGitHub' })}
           >
             Logout
