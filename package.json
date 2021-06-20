@@ -5,6 +5,7 @@
   "description": "Swagger Viewer",
   "main": "index.js",
   "scripts": {
+    "test": "uvu -r ts-eager/register -r tsconfig-paths/register",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -34,8 +35,12 @@
     "@types/swagger-ui-react": "3.35.1",
     "eslint": "^7.29.0",
     "eslint-config-next": "^11.0.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
     "prettier": "^2.3.1",
     "sass": "1.35.1",
-    "typescript": "4.3.4"
+    "ts-eager": "2.0.2",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "4.3.4",
+    "uvu": "0.5.1"
   }
 }

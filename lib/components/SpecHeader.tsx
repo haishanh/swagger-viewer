@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import * as React from 'react';
 import { ArrowLeft } from 'react-feather';
-import Link from 'next/link';
 
 import s0 from './SpecHeader.module.scss';
 

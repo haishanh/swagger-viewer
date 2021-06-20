@@ -1,6 +1,7 @@
 import VisuallyHidden from '@reach/visually-hidden';
 import * as React from 'react';
 import { Check, Clipboard } from 'react-feather';
+
 import { IconButton } from '$lib/components/base/IconButton';
 
 const { useCallback, useState } = React;

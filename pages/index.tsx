@@ -1,26 +1,26 @@
-import s from '$styles/Home.module.scss';
-import { Og } from '$lib/components/Og';
 import VisuallyHidden from '@reach/visually-hidden';
 import cx from 'clsx';
+import Link from 'next/link';
 import * as React from 'react';
 import { X as IconClose } from 'react-feather';
-import Link from 'next/link';
-import { IconButton } from '$lib/components/base/IconButton';
-import { CopyButton } from '$lib/components/SpecList/CopyButton';
 
-import { RegularExpression } from '$lib/misc/constants';
+import { IconButton } from '$lib/components/base/IconButton';
 import Empty from '$lib/components/Empty';
 import EnterNewSepcUrl from '$lib/components/EnterNewSpecUrl';
+import { Og } from '$lib/components/Og';
 import { useDispatch, useStore } from '$lib/components/Provider';
+import { CopyButton } from '$lib/components/SpecList/CopyButton';
 import Tag, { GreenTag, PinkTag, YellowTag } from '$lib/components/Tag';
+import * as ghUtil from '$lib/utils/github.util';
+import s from '$styles/Home.module.scss';
 
 function getTagFromSpecUrl(url: string) {
   let cap: RegExpMatchArray;
   let ref: string;
-  if ((cap = RegularExpression.githubFileUrl.exec(url))) {
+  if ((cap = ghUtil.Patten.githubFileUrl.exec(url))) {
     ref = cap[3];
-  } else if ((cap = RegularExpression.githubRawFileUrl.exec(url))) {
-    ref = cap[1];
+  } else if ((cap = ghUtil.Patten.githubRawFileUrl.exec(url))) {
+    ref = cap[3];
   } else {
     return;
   }

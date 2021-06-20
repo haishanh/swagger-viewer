@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { GitHub } from 'react-feather';
 
-import { loginWithGitHub } from '$lib/misc/github';
 import Button from '$lib/components/Button';
+import { loginWithGitHub } from '$lib/misc/github';
 
 export default function GitHubFileNotFound({ repo, owner }) {
   const repoName = owner + '/' + repo;

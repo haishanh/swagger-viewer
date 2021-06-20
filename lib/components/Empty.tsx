@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { Ghost } from 'react-kawaii';
-import { useRouter } from 'next/router';
 
 import Button from './Button';
 import s from './Empty.module.css';

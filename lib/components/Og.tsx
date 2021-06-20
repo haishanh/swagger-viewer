@@ -1,6 +1,9 @@
 import Head from 'next/head';
 
-export function Og(props: { title?: string }) {
+const ogImageUrl =
+  'https://repository-images.githubusercontent.com/196245690/b79fb280-58db-11ea-92b1-12f9f0132d03';
+
+export function Og(props: { title?: string; ogImageUrl?: string }) {
   return (
     <Head>
       <title>{props.title || 'Swagger Viewer'}</title>
@@ -8,10 +11,7 @@ export function Og(props: { title?: string }) {
       <meta name="application-name" content="Swagger Viewer" />
       <meta name="description" content="Swagger Viewer" />
       <meta name="theme-color" content="#202020" />
-      <meta
-        property="og:image"
-        content="https://repository-images.githubusercontent.com/196245690/b79fb280-58db-11ea-92b1-12f9f0132d03"
-      />
+      <meta property="og:image" content={props.ogImageUrl || ogImageUrl} />
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Swagger Viewer" />
       <meta property="og:url" content="https://swagger-viewer.now.sh" />

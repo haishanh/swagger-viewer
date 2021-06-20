@@ -1,5 +1,5 @@
-import React from 'react';
 import { useRouter } from 'next/router';
+import * as React from 'react';
 
 import s0 from './EnterNewSpecUrl.module.scss';
 import Input from './Input';
