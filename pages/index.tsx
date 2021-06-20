@@ -27,7 +27,7 @@ function getTagFromSpecUrl(url: string) {
 
   let tagType = PinkTag;
   let label = ref;
-  if (ref === 'master') {
+  if (ref === 'master' || ref === 'main') {
     tagType = GreenTag;
   } else if (ref === 'dev' || ref === 'develop' || ref === 'development') {
     tagType = YellowTag;
