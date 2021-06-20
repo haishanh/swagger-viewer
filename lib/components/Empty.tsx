@@ -10,8 +10,8 @@ const url = 'https://httpbin.org/spec.json';
 function Empty() {
   const router = useRouter();
   const navToHttpBinSepc = () => {
-    const to = encodeURIComponent(url);
-    router.push('/' + to);
+    const to = '/spec/' + encodeURIComponent(url);
+    router.push(to);
   };
   return (
     <>

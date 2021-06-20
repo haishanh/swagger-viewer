@@ -14,7 +14,7 @@ export default function EnterNewSepcUrl() {
   function onSubmit(e) {
     e.preventDefault();
     if (value === '') return;
-    router.push('/' + encodeURIComponent(value));
+    router.push('/spec/' + encodeURIComponent(value));
   }
 
   const onChange = useCallback((e) => {

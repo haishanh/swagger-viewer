@@ -33,13 +33,18 @@ function buildOgImageUrl(meta: ghUtil.GitHubFileMeta) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log(getServerSideProps, context);
+
   const url = context.params.id as string;
+  console.log('getServerSideProps', url);
   const ret = ghUtil.extractUrlMeta(url);
-  const ogImageUrl = buildOgImageUrl(ret);
+  console.log('getServerSideProps', ret);
+  const ogImageUrl = ret ? buildOgImageUrl(ret) : undefined;
 
   return {
     props: {
       ogImageUrl,
+      url,
     },
   };
 };
@@ -55,10 +60,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 let githubGetContentsOptions: Partial<ghUtil.GitHubFileMeta> = {};
 
-export default function Spec(props: { ogImageUrl?: string }) {
+export default function Spec(props: { ogImageUrl?: string; url?: string }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const url = router.query.id as string;
+
+  console.log('router', router.query);
+  console.log('props', props);
+
+  const url = (router.query.id as string) || props.url;
   const [swaggerProps, setSwaggerProps] = useState<{
     url?: string;
     spec?: string;

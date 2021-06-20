@@ -42,7 +42,7 @@ function getTagFromSpecUrl(url: string) {
 }
 
 function SpecListItem({ specs, url, dispatch }) {
-  const to = encodeURIComponent(url);
+  const to = '/spec/' + encodeURIComponent(url);
   const tag = getTagFromSpecUrl(url);
 
   return (
