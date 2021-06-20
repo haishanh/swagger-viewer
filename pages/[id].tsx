@@ -1,7 +1,5 @@
-// vim : set ft=javascript :
 import 'swagger-ui-react/swagger-ui.css';
-
-import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import yaml from 'js-yaml';
 import * as React from 'react';
 
@@ -14,14 +12,6 @@ import * as b64 from '$lib/misc/b64';
 import { RegularExpression } from '$lib/misc/constants';
 import { getContents } from '$lib/misc/github';
 import SwaggerUI from 'swagger-ui-react';
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return {
-    props: {
-      id: context.params?.id,
-    },
-  };
-};
 
 const { useCallback, useState, useEffect } = React;
 
@@ -42,27 +32,27 @@ let githubGetContentsOptions: {
 } = {};
 
 export default function Spec(props: { id?: string }) {
+  const router = useRouter();
   const dispatch = useDispatch();
-  const url = props.id;
-  // const params = useParams();
-  // const url = decodeURIComponent(params.id);
+  const url = router.query.id as string;
   const [swaggerProps, setSwaggerProps] = useState<{
     url?: string;
     spec?: string;
-  }>(() => {
-    let cap = RegularExpression.githubFileUrl.exec(url);
-    if (!cap) return { url };
-
-    const [, owner, repo, ref, path] = cap;
-    githubGetContentsOptions = { owner, repo, ref, path };
-    return {};
-  });
+  }>({});
   const [err, setErr] = useState<{
     notFound: typeof githubGetContentsOptions;
   }>();
   const [title, setTitle] = useState();
   useEffect(() => {
-    if (swaggerProps.url) return;
+    if (!url) return;
+
+    let cap = RegularExpression.githubFileUrl.exec(url);
+    if (!cap) {
+      setSwaggerProps({ url });
+      return;
+    }
+    const [, owner, repo, ref, path] = cap;
+    const githubGetContentsOptions = { owner, repo, ref, path };
     getContents(githubGetContentsOptions).then(
       (json) => {
         const cnt = b64.decode(json.content);
@@ -75,7 +65,7 @@ export default function Spec(props: { id?: string }) {
         }
       }
     );
-  }, [swaggerProps.url]);
+  }, [swaggerProps.url, url]);
   const onComplete = useCallback(
     (system) => {
       const state = system.getState();
@@ -94,18 +84,12 @@ export default function Spec(props: { id?: string }) {
     <>
       <Og title={title} />
       <SpecHeader />
-
       {swaggerProps.spec || swaggerProps.url ? (
         <SwaggerUI {...swaggerProps} onComplete={onComplete} />
       ) : !err ? (
         <Loading height={100} />
       ) : err.notFound ? (
-        <div
-          style={{
-            maxWidth: 500,
-            margin: '0 auto',
-          }}
-        >
+        <div style={{ maxWidth: 500, margin: '0 auto' }}>
           <FileNotFound owner={err.notFound.owner} repo={err.notFound.repo} />
         </div>
       ) : null}
