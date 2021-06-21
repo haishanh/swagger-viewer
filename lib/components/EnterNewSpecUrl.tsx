@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
+import { buildSpecLink } from '$lib/utils/route.util';
+
 import s0 from './EnterNewSpecUrl.module.scss';
 import Input from './Input';
 
@@ -11,10 +13,11 @@ export default function EnterNewSepcUrl() {
 
   const router = useRouter();
 
-  function onSubmit(e) {
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (value === '') return;
-    router.push('/spec/' + encodeURIComponent(value));
+    const to = buildSpecLink(value);
+    router.push(to);
   }
 
   const onChange = useCallback((e) => {

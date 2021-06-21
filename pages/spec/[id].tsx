@@ -22,14 +22,15 @@ function buildOgImageUrl(meta: ghUtil.GitHubFileMeta) {
     w: '640',
     h: '320',
     u: '0',
+    // max age => one year
+    c: '31536000',
     p0: 'ghfl',
     p1: meta.owner,
     p2: meta.repo,
     p3: meta.ref,
     p4: meta.path,
   });
-  // return `https://imgsvc.vercel.app/image?${qs}`;
-  return `https://imgsvc-git-p1-haishan.vercel.app/image?${qs}`;
+  return `https://imgsvc.vercel.app/image?${qs}`;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

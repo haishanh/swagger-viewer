@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { Ghost } from 'react-kawaii';
 
+import { buildSpecLink } from '$lib/utils/route.util';
+
 import Button from './Button';
 import s from './Empty.module.css';
 
@@ -10,7 +12,7 @@ const url = 'https://httpbin.org/spec.json';
 function Empty() {
   const router = useRouter();
   const navToHttpBinSepc = () => {
-    const to = '/spec/' + encodeURIComponent(url);
+    const to = buildSpecLink(url);
     router.push(to);
   };
   return (
