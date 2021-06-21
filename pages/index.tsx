@@ -12,6 +12,7 @@ import { useDispatch, useStore } from '$lib/components/Provider';
 import { CopyButton } from '$lib/components/SpecList/CopyButton';
 import Tag, { GreenTag, PinkTag, YellowTag } from '$lib/components/Tag';
 import * as ghUtil from '$lib/utils/github.util';
+import { buildSpecLink } from '$lib/utils/route.util';
 import s from '$styles/Home.module.scss';
 
 function getTagFromSpecUrl(url: string) {
@@ -42,7 +43,7 @@ function getTagFromSpecUrl(url: string) {
 }
 
 function SpecListItem({ specs, url, dispatch }) {
-  const to = '/spec/' + encodeURIComponent(url);
+  const to = buildSpecLink(url);
   const tag = getTagFromSpecUrl(url);
 
   return (
