@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params.id as string;
   const url = decodeURIComponent(b64.urlDecode(id));
   const ret = ghUtil.extractUrlMeta(url);
-  const ogImageUrl = ret ? buildOgImageUrl(ret) : undefined;
+  const ogImageUrl = ret ? buildOgImageUrl(ret) : null;
 
   return {
     props: {

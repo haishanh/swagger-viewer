@@ -23,7 +23,9 @@
 }
 
 .li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 34px 1fr 34px;
+  // display: flex;
   align-items: center;
 
   margin-top: 30px;
@@ -75,8 +77,8 @@
 
 .copyBtn {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: 6px;
+  right: 6px;
   visibility: hidden;
 }
 

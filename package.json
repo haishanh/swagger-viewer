@@ -12,31 +12,38 @@
     "lint": "next lint"
   },
   "prettier": {
-    "singleQuote": true
+    "overrides": [
+      {
+        "files": "*.css",
+        "options": {
+          "printWidth": 1000
+        }
+      }
+    ]
   },
   "author": "Haishan <haishanhan@gmail.com> (https://haishan.me)",
   "license": "MIT",
   "dependencies": {
-    "@reach/visually-hidden": "0.15.0",
+    "@reach/visually-hidden": "0.15.2",
     "axios": "^0.21.1",
     "clsx": "1.1.1",
     "copy-text-to-clipboard": "3.0.1",
     "js-yaml": "4.1.0",
-    "next": "11.0.0",
+    "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-feather": "2.0.9",
     "react-kawaii": "0.17.0",
-    "swagger-ui-react": "3.50.0"
+    "swagger-ui-react": "3.51.0"
   },
   "devDependencies": {
     "@types/js-yaml": "4.0.1",
     "@types/react": "^17.0.11",
     "@types/swagger-ui-react": "3.35.1",
     "eslint": "^7.29.0",
-    "eslint-config-next": "^11.0.0",
+    "eslint-config-next": "11.0.1",
     "eslint-plugin-simple-import-sort": "7.0.0",
-    "prettier": "^2.3.1",
+    "prettier": "2.3.2",
     "sass": "1.35.1",
     "ts-eager": "2.0.2",
     "tsconfig-paths": "3.9.0",
