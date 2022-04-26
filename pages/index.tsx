@@ -42,6 +42,15 @@ function getTagFromSpecUrl(url: string) {
   };
 }
 
+function SpecListItemPlaceholder() {
+  return (
+    <li className={s.li}>
+      <span />
+      <div className={s.SpecListItemPlaceholder} />
+    </li>
+  );
+}
+
 function SpecListItem({ specs, url, dispatch }) {
   const to = buildSpecLink(url);
   const tag = getTagFromSpecUrl(url);
@@ -49,9 +58,7 @@ function SpecListItem({ specs, url, dispatch }) {
   return (
     <li className={s.li}>
       <span className={s.rm}>
-        <IconButton
-          onClick={() => dispatch({ type: 'RemoveOneSpec', payload: { url } })}
-        >
+        <IconButton onClick={() => dispatch({ type: 'RemoveOneSpec', payload: { url } })}>
           <VisuallyHidden>Remove this entry</VisuallyHidden>
           <IconClose size={16} />
         </IconButton>
@@ -77,7 +84,7 @@ function SpecListItem({ specs, url, dispatch }) {
 }
 
 export default function Home() {
-  const { specs } = useStore();
+  const { specs, loaded } = useStore();
   const dispatch = useDispatch();
   const urls = Object.keys(specs);
 
@@ -88,15 +95,16 @@ export default function Home() {
         <EnterNewSepcUrl />
       </div>
       <div className={s.container}>
-        {urls.length > 0 ? (
+        {!loaded ? (
+          <ul className={s.ul}>
+            <SpecListItemPlaceholder />
+            <SpecListItemPlaceholder />
+            <SpecListItemPlaceholder />
+          </ul>
+        ) : urls.length > 0 ? (
           <ul className={s.ul}>
             {urls.map((url) => (
-              <SpecListItem
-                url={url}
-                dispatch={dispatch}
-                specs={specs}
-                key={url}
-              />
+              <SpecListItem url={url} dispatch={dispatch} specs={specs} key={url} />
             ))}
           </ul>
         ) : (
@@ -125,10 +133,7 @@ function FixedTinyFooter() {
       {isLoggedInGitHub ? (
         <>
           <span className={s.sepTinyFooter}> / </span>
-          <button
-            className={cx(s.btnTinyFooter, 'secondary-link')}
-            onClick={() => dispatch({ type: 'LogOutGitHub' })}
-          >
+          <button className={cx(s.btnTinyFooter, 'secondary-link')} onClick={() => dispatch({ type: 'LogOutGitHub' })}>
             Logout
           </button>
         </>

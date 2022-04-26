@@ -2,7 +2,7 @@
 
 const StorageKey = 'swagger-viewer.haishan.me';
 
-const initialState = {
+export const initialState = {
   specs: {},
   allSpecs: [],
 };
