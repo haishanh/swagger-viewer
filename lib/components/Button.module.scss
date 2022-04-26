@@ -2,6 +2,7 @@
   -webkit-appearance: none;
   outline: none;
   user-select: none;
+  cursor: pointer;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -23,7 +24,7 @@
   }
 
   font-size: 1em;
-  padding: 6px 12px;
+  padding: 9px 18px;
 
   &.minimal {
     border-color: transparent;

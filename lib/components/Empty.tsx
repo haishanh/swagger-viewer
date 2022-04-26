@@ -24,11 +24,7 @@ function Empty() {
         <h3>No swagger specs yet</h3>
         <p>
           Try add the spec below which is from the great{' '}
-          <a
-            href="https://httpbin.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://httpbin.org/" target="_blank" rel="noopener noreferrer">
             httpbin.org
           </a>
         </p>

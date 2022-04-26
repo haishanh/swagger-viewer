@@ -4,7 +4,6 @@ import yaml from 'js-yaml';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import SwaggerUI from 'swagger-ui-react';
 
 import FileNotFound from '$lib/components/FileNotFound';
 import Loading from '$lib/components/Loading';
@@ -15,7 +14,9 @@ import * as b64 from '$lib/misc/b64';
 import { getContents } from '$lib/misc/github';
 import * as ghUtil from '$lib/utils/github.util';
 
-const { useCallback, useState, useEffect } = React;
+const { useCallback, useState, useEffect, Suspense } = React;
+
+const SwaggerUI = React.lazy(() => import('swagger-ui-react'));
 
 function buildOgImageUrl(meta: ghUtil.GitHubFileMeta) {
   const qs = new URLSearchParams({
@@ -61,8 +62,7 @@ let githubGetContentsOptions: Partial<ghUtil.GitHubFileMeta> = {};
 export default function Spec(props: { ogImageUrl?: string; url?: string }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const url =
-    props.url || decodeURIComponent(b64.urlDecode(router.query.id as string));
+  const url = props.url || decodeURIComponent(b64.urlDecode(router.query.id as string));
   const [swaggerProps, setSwaggerProps] = useState<{
     url?: string;
     spec?: string;
@@ -71,6 +71,7 @@ export default function Spec(props: { ogImageUrl?: string; url?: string }) {
     notFound: typeof githubGetContentsOptions;
   }>();
   const [title, setTitle] = useState();
+
   useEffect(() => {
     if (!url) return;
 
@@ -95,7 +96,7 @@ export default function Spec(props: { ogImageUrl?: string; url?: string }) {
     );
   }, [swaggerProps.url, url]);
   const onComplete = useCallback(
-    (system) => {
+    (system: any) => {
       const state = system.getState();
       // state is an immutablejs data
       // const version = state.getIn(['spec', 'json', 'info', 'version']);
@@ -113,7 +114,9 @@ export default function Spec(props: { ogImageUrl?: string; url?: string }) {
       <Og title={title} ogImageUrl={props.ogImageUrl} />
       <SpecHeader />
       {swaggerProps.spec || swaggerProps.url ? (
-        <SwaggerUI {...swaggerProps} onComplete={onComplete} />
+        <Suspense fallback={<Loading height={100} />}>
+          <SwaggerUI {...swaggerProps} onComplete={onComplete} />
+        </Suspense>
       ) : !err ? (
         <Loading height={100} />
       ) : err.notFound ? (
